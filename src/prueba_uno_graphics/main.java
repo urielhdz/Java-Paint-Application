@@ -99,7 +99,7 @@ public class main extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setText("Rectángulo");
+        jButton1.setText("TODO");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -110,7 +110,7 @@ public class main extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton1);
 
-        jButton2.setText("Guardar Imagen");
+        jButton2.setText("Save image");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
