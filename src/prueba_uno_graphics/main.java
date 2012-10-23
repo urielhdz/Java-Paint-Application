@@ -10,9 +10,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JColorChooser;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -20,12 +26,22 @@ import javax.imageio.ImageIO;
  */
 public class main extends javax.swing.JFrame {
 
-    int uX, uY;
-    BufferedImage img;
-    Image imagen;
     Dibujo canvas1;
+    private JDialog dialog;
+    private JSlider slider = new JSlider();
     public main() {
         initComponents();
+        slider.setMinimum(2);
+        slider.setMaximum(20);
+        slider.addChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(canvas1.m_alzada) canvas1.changeStrk(slider.getValue());
+                else canvas1.strk_width = slider.getValue();
+            }
+        });
+        dialog = new JDialog(this,"Pick the width of your color");
+
         canvas1 = new Dibujo();
         canvas1.setBounds(20, 40, 600, 400);
         canvas1.addMouseMotionListener(new java.awt.event.MouseMotionListener() {
@@ -83,7 +99,12 @@ public class main extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -99,7 +120,7 @@ public class main extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setText("TODO");
+        jButton1.setText("Circle");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -110,6 +131,28 @@ public class main extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton1);
 
+        jButton3.setText("Free");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton3);
+
+        jButton4.setText("Rectangle");
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton4);
+
         jButton2.setText("Save image");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,6 +160,39 @@ public class main extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButton2);
+
+        jButton5.setText("Pick Color");
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton5);
+
+        jButton6.setText("Erase");
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton6);
+
+        jButton7.setText("Change stroke");
+        jButton7.setFocusable(false);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton7);
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -132,8 +208,8 @@ public class main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(247, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,39 +223,62 @@ public class main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        canvas1.circle = true;
+        canvas1.m_alzada = false;
+        canvas1.rectangle = false;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /*int w = canvas1.getWidth();
+        int w = canvas1.getWidth();
         int h = canvas1.getHeight();
         int type = BufferedImage.TYPE_INT_BGR;
         BufferedImage image = new BufferedImage(w,h,type);
         Graphics2D g2 = image.createGraphics(); 
-        canvas1.to_save = true;
-        canvas1.printAll(g2);
+        canvas1.paint(g2);
         try {
             ImageIO.write(image, "png", new File("C:/Users/Uriel/Desktop/ejemplo.png"));
         } catch (IOException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        Container pane = this.getContentPane();
-        BufferedImage example = new BufferedImage(pane.getWidth(), pane.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = example.createGraphics();
-        pane.printAll(g2d);
-        g2d.dispose();
-        try {
-            ImageIO.write(example, "png", new File("save.png"));
-        } catch (IOException ex) {
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        canvas1.circle = false;
+        canvas1.m_alzada = true;
+        canvas1.rectangle = false;
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        canvas1.circle = false;
+        canvas1.m_alzada = false;
+        canvas1.rectangle = true;
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (canvas1.m_alzada) canvas1.changeColor(JColorChooser.showDialog(this, "Selecciona un color",canvas1.color));
+        else canvas1.color = JColorChooser.showDialog(this, "Selecciona un color",canvas1.color);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        canvas1.m_alzada = true;
+        canvas1.rectangle = false;
+        canvas1.circle = false;
+        canvas1.changeColor(Color.white);
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        slider.setValue(canvas1.strk_width);
+        dialog.add(slider);
+        dialog.setSize(300,100);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton7ActionPerformed
     public void erase(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(Color.white);
         g2.fillRect(0, 0, canvas1.getWidth(),canvas1.getHeight());
-        
     }
     /**
      * @param args the command line arguments
@@ -225,6 +324,11 @@ public class main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
